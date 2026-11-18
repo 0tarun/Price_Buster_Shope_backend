@@ -2,7 +2,10 @@
 
 ## Local setup
 
-1. Copy `.env.example` to `.env` and set `MONGO_URI`.
+1. Copy `.env.example` to `.env` and set `MONGO_URI`, `ADMIN_API_KEY`, and the
+   Cloudinary credentials (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and
+   `CLOUDINARY_API_SECRET`). Keep the Cloudinary secret and admin key only on
+   the backend; never add them to a `VITE_` variable.
 2. Keep `CORS_ORIGINS=http://localhost:5173` for the local Vite frontend.
 3. Run `npm install`, then `npm run dev`.
 
@@ -40,3 +43,21 @@ configured yet; the login page's password-help link contacts support.
 Orders are not part of this authentication database yet. Until their API is
 implemented, order history is empty; saved addresses and preferences remain
 browser-local and should not be treated as production account storage.
+
+## Admin dashboard
+
+Open `/admin` in the frontend and sign in with `ADMIN_API_KEY`. The dashboard
+uploads images through the backend to Cloudinary and stores products, multiple
+homepage hero slides, and the optional side banner in MongoDB. Product and
+banner images and customer videos must be no larger than 50 MB. Use HTTPS in production;
+the admin key is sent to the backend for admin requests.
+
+- `GET /api/products` — list saved products.
+- `GET /api/site-settings/homepage` — read database homepage banners.
+- `GET /api/admin/homepage` — list homepage banners for the admin dashboard.
+- `GET /api/admin/products` — list saved products for the dashboard.
+- `POST /api/admin/login` — check the admin key.
+- `POST /api/admin/upload` — upload an image or video (up to 50 MB) to Cloudinary.
+- `POST`, `PUT`, and `DELETE /api/admin/products` — create, update, and remove
+  products (update/delete take the MongoDB ID in the path).
+- `PUT /api/admin/homepage` — save hero slides, optional side banner, and up to 30 customer videos.

@@ -23,6 +23,9 @@ app.use('/api/auth', (req, res, next) => {
   }
   next();
 }, require('./routes/authRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/site-settings', require('./routes/siteRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 app.get('/', (req, res) => {
   res.send('API is running...');
